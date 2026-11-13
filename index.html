@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서지훈 작가 | 문학과 기술의 경계를 기록하는 SF·인문 작가</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Pretendard & Noto Serif KR Fonts -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            serif: ['"Noto Serif KR"', 'Georgia', 'serif'],
+          },
+          colors: {
+            canvas: '#FAFAFC',
+            ink: '#18181B',
+            mutedInk: '#52525B',
+            lineBorder: '#E4E4E7',
+            cobalt: '#2563EB',
+            skyAccent: '#0EA5E9',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAFAFC;
+      color: #18181B;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* 멀티 뷰 전환 애니메이션 */
+    .page-view {
+      display: none;
+      animation: fadeSlideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .page-view.active {
+      display: block;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 첨단 로봇 히어로 부유 효과 */
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    .animate-robot-float {
+      animation: gentleFloat 5.5s ease-in-out infinite;
+    }
+
+    /* 에디토리얼 미세 도트 그리드 */
+    .bg-editorial-grid {
+      background-size: 28px 28px;
+      background-image: radial-gradient(rgba(37, 99, 235, 0.11) 1px, transparent 1px);
+    }
+
+    /* 책 표지 3D 호버 입체감 */
+    .book-cover-card {
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .book-cover-card:hover {
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#FAFAFC] text-[#18181B] selection:bg-blue-100 selection:text-blue-900">
+
+  <!-- ======================================================================= -->
+  <!-- TOP STICKY GLASSMORPHISM NAVIGATION BAR                                 -->
+  <!-- ======================================================================= -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-[#E4E4E7]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- 작가 브랜드 로고 -->
+      <button type="button" onclick="navigateTo('home')" class="flex items-center gap-3 group focus:outline-none">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#0EA5E9] flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
+          <!-- 만년필 + 회로 심볼 아이콘 -->
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+            <path d="M2 2l7.586 7.586"/>
+            <circle cx="11" cy="11" r="2"/>
+          </svg>
+        </div>
+        <div class="text-left">
+          <span class="font-serif font-bold text-lg tracking-tight text-[#18181B]">서지훈 <span class="text-[#2563EB] font-sans font-extrabold text-sm ml-0.5">ARCHIVE</span></span>
+          <p class="hidden sm:block text-[11px] text-[#52525B] -mt-0.5">SF · 인문 테크 에세이스트</p>
+        </div>
+      </button>
+
+      <!-- 데스크톱 4개 페이지 메뉴 -->
+      <nav aria-label="주요 페이지 메뉴" class="hidden md:flex items-center gap-1 bg-[#FAFAFC] p-1 rounded-full border border-[#E4E4E7]">
+        <button type="button" data-nav="home" onclick="navigateTo('home')" class="nav-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all">
+          홈
+        </button>
+        <button type="button" data-nav="about" onclick="navigateTo('about')" class="nav-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all">
+          자기소개
+        </button>
+        <button type="button" data-nav="projects" onclick="navigateTo('projects')" class="nav-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all">
+          작품 소개
+        </button>
+        <button type="button" data-nav="guestbook" onclick="navigateTo('guestbook')" class="nav-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all">
+          방명록
+        </button>
+      </nav>
+
+      <!-- 모바일 햄버거 메뉴 버튼 -->
+      <button type="button" id="mobile-menu-btn" aria-label="메뉴 열기" class="md:hidden p-2 rounded-xl text-[#52525B] hover:bg-zinc-100 transition-colors">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 모바일 드롭다운 내비게이션 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-[#E4E4E7] px-4 py-3 space-y-1">
+      <button type="button" data-nav="home" onclick="navigateTo('home')" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold">홈</button>
+      <button type="button" data-nav="about" onclick="navigateTo('about')" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold">자기소개</button>
+      <button type="button" data-nav="projects" onclick="navigateTo('projects')" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold">작품 소개</button>
+      <button type="button" data-nav="guestbook" onclick="navigateTo('guestbook')" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold">방명록</button>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- MAIN MULTI-VIEW CONTENT AREA                                            -->
+  <!-- ======================================================================= -->
+  <main class="flex-1">
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 1: 홈 (LANDING PAGE)                                             -->
+    <!-- ===================================================================== -->
+    <section id="page-home" class="page-view active">
+      <!-- 히어로 섹션: 밝은 에디토리얼 라이트 + 첨단 휴머노이드 로봇 아트워크 -->
+      <div class="relative overflow-hidden bg-gradient-to-b from-white via-[#FAFAFC] to-[#FAFAFC] bg-editorial-grid border-b border-[#E4E4E7]">
+        <!-- 은은한 코발트 & 스카이 블루 라이트 글로우 -->
+        <div class="pointer-events-none absolute -top-24 right-1/4 w-96 h-96 bg-sky-200/30 rounded-full blur-3xl"></div>
+        <div class="pointer-events-none absolute top-28 -left-24 w-80 h-80 bg-blue-100/45 rounded-full blur-3xl"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            
+            <!-- 좌측: 문학과 기술, 인간의 미래를 탐구하는 작가 헤드라인 & CTA -->
+            <div class="lg:col-span-6 space-y-6">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-bold tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse"></span>
+                <span>SF FICTION & HUMANITIES ESSAYIST</span>
+              </div>
+
+              <h1 class="font-serif text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#18181B] leading-[1.28] tracking-tight">
+                차가운 금속의 심장 속에서<br />
+                가장 따뜻한 <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#0EA5E9]">인간의 문장</span>을<br />
+                길어 올립니다.
+              </h1>
+
+              <p class="text-base sm:text-[17px] text-[#52525B] leading-relaxed max-w-xl">
+                안녕하세요, 소설가이자 테크 에세이스트 <strong class="text-[#18181B] font-semibold">서지훈</strong>입니다. 인공지능과 휴머노이드 로봇이 일상이 된 미래 풍경 속에서, 우리가 끝내 잃지 말아야 할 기억과 감정, 그리고 '인간다움'의 윤리를 기록합니다.
+              </p>
+
+              <!-- 2개 핵심 CTA 버튼 -->
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <button type="button" onclick="navigateTo('projects')" class="px-6 py-3.5 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-600/20 transition-all flex items-center gap-2">
+                  <span>작품 읽어보기</span>
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M5 12h14M13 5l7 7-7 7"/>
+                  </svg>
+                </button>
+                <button type="button" onclick="navigateTo('about')" class="px-6 py-3.5 rounded-xl bg-white hover:bg-zinc-50 text-[#18181B] font-bold text-sm border border-[#E4E4E7] shadow-sm transition-all">
+                  작가 소개 보기
+                </button>
+              </div>
+
+              <!-- 작가 핵심 지표 -->
+              <div class="grid grid-cols-3 gap-4 pt-5 border-t border-[#E4E4E7] max-w-md">
+                <div>
+                  <div class="text-2xl font-extrabold text-[#18181B]">6권</div>
+                  <div class="text-xs text-[#52525B] font-medium mt-0.5">단독 출간 저서</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-extrabold text-[#2563EB]">2022</div>
+                  <div class="text-xs text-[#52525B] font-medium mt-0.5">미래문학상 대상</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-extrabold text-[#18181B]">42편</div>
+                  <div class="text-xs text-[#52525B] font-medium mt-0.5">SF 단편·인문 칼럼</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 우측: 깔끔하고 미래지향적인 첨단 휴머노이드 로봇 아트워크 -->
+            <div class="lg:col-span-6">
+              <div class="relative mx-auto max-w-lg animate-robot-float">
+                <div class="relative rounded-3xl bg-white p-3.5 sm:p-4 border border-[#E4E4E7] shadow-xl shadow-zinc-200/70">
+                  <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50 to-blue-50 flex items-center justify-center">
+                    <!-- 고해상도 화이트 첨단 휴머노이드 로봇 이미지 (로드 실패 시 정교한 화이트·실버 로봇 SVG 자동 대체) -->
+                    <img 
+                      src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1000&q=85" 
+                      alt="깔끔한 화이트 첨단 휴머노이드 로봇 아트워크"
+                      class="w-full h-full object-cover object-center relative z-10"
+                      onerror="this.style.display='none'; document.getElementById('hero-robot-svg').classList.remove('hidden');"
+                    />
+
+                    <!-- 정교한 화이트·실버 휴머노이드 로봇 SVG 일러스트레이션 폴백 -->
+                    <div id="hero-robot-svg" class="hidden absolute inset-0 flex items-center justify-center p-6">
+                      <svg class="w-full h-full max-w-[310px]" viewBox="0 0 340 270" fill="none">
+                        <defs>
+                          <linearGradient id="ceramicWhite" x1="70" y1="30" x2="270" y2="240" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#FFFFFF"/>
+                            <stop offset="55%" stop-color="#F4F4F5"/>
+                            <stop offset="100%" stop-color="#D4D4D8"/>
+                          </linearGradient>
+                          <linearGradient id="silverTrim" x1="90" y1="70" x2="250" y2="200" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#E4E4E7"/>
+                            <stop offset="100%" stop-color="#A1A1AA"/>
+                          </linearGradient>
+                          <linearGradient id="opticVisor" x1="110" y1="88" x2="230" y2="128" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#0F172A"/>
+                            <stop offset="100%" stop-color="#1E293B"/>
+                          </linearGradient>
+                        </defs>
+                        <!-- 배경 궤도 링 -->
+                        <circle cx="170" cy="135" r="112" stroke="#BAE6FD" stroke-width="1.5" stroke-dasharray="5 5"/>
+                        <circle cx="170" cy="135" r="88" fill="#E0F2FE" fill-opacity="0.4"/>
+                        <!-- 상반신 숄더 유닛 -->
+                        <path d="M92 242C96 198 128 180 170 180C212 180 244 198 248 242" fill="url(#ceramicWhite)" stroke="url(#silverTrim)" stroke-width="2"/>
+                        <rect x="142" y="196" width="56" height="24" rx="12" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.5"/>
+                        <circle cx="170" cy="208" r="5" fill="#2563EB"/>
+                        <!-- 경추 서보 모듈 -->
+                        <rect x="152" y="154" width="36" height="28" rx="7" fill="#A1A1AA"/>
+                        <line x1="152" y1="164" x2="188" y2="164" stroke="#E4E4E7" stroke-width="1.5"/>
+                        <line x1="152" y1="172" x2="188" y2="172" stroke="#E4E4E7" stroke-width="1.5"/>
+                        <!-- 헤드 쉘 -->
+                        <rect x="102" y="52" width="136" height="106" rx="46" fill="url(#ceramicWhite)" stroke="url(#silverTrim)" stroke-width="2.5"/>
+                        <!-- 음향 센서 모듈 -->
+                        <rect x="89" y="90" width="13" height="36" rx="6.5" fill="#0EA5E9"/>
+                        <rect x="238" y="90" width="13" height="36" rx="6.5" fill="#0EA5E9"/>
+                        <!-- 옵틱 바이저 -->
+                        <rect x="116" y="82" width="108" height="46" rx="23" fill="url(#opticVisor)"/>
+                        <!-- 감성 AI 옵틱 아이 -->
+                        <circle cx="147" cy="105" r="8.5" fill="#38BDF8"/>
+                        <circle cx="144.5" cy="102.5" r="2.8" fill="#FFFFFF"/>
+                        <circle cx="193" cy="105" r="8.5" fill="#38BDF8"/>
+                        <circle cx="190.5" cy="102.5" r="2.8" fill="#FFFFFF"/>
+                        <!-- 상단 텔레메트리 안테나 -->
+                        <path d="M170 34V52" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="170" cy="30" r="5.5" fill="#0EA5E9"/>
+                      </svg>
+                    </div>
+
+                    <!-- 좌측 상단 에디토리얼 뱃지 -->
+                    <div class="absolute top-3 left-3 z-20 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#E4E4E7] shadow-sm flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-[#0EA5E9]"></span>
+                      <span class="text-xs font-bold text-[#18181B]">MODEL E-07 · 『유리 심장의 연대기』 모티프</span>
+                    </div>
+                  </div>
+
+                  <!-- 하단 아트워크 캡션 -->
+                  <div class="mt-3 px-2 py-1 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2 text-[#52525B] font-medium">
+                      <span class="px-2 py-0.5 rounded-md bg-blue-50 text-[#2563EB] font-bold">LITERATURE × AI</span>
+                      <span>기계의 시선으로 바라본 인간의 온기</span>
+                    </div>
+                    <span class="text-zinc-400 font-serif italic hidden sm:inline">Archive 2026</span>
+                  </div>
+                </div>
+
+                <!-- 우측 하단 플로팅 문장 뱃지 카드 -->
+                <div class="hidden sm:flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-[#E4E4E7] shadow-lg absolute -bottom-5 -right-4 z-30 max-w-[250px]">
+                  <div class="w-10 h-10 rounded-xl bg-sky-50 text-[#0EA5E9] flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-[#18181B]">신작 장편소설 출간</div>
+                    <div class="text-[11px] text-[#52525B] leading-snug">『유리 심장의 연대기』 3쇄 돌파</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 홈 하단: 대표 출간작 요약 하이라이트 & 집필 철학 프리뷰 카드 3종 -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-2">
+          <div>
+            <span class="text-xs font-bold text-[#2563EB] tracking-wider uppercase">WRITING PHILOSOPHY & HIGHLIGHTS</span>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#18181B] mt-1">작품 세계와 집필의 세 가지 축</h2>
+          </div>
+          <button type="button" onclick="navigateTo('projects')" class="text-sm font-semibold text-[#2563EB] hover:text-blue-700 flex items-center gap-1">
+            <span>전체 서지(Bibliography) 보기</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 프리뷰 카드 1 -->
+          <div class="bg-white rounded-2xl p-6 border border-[#E4E4E7] hover:border-blue-200 hover:shadow-lg hover:shadow-zinc-200/50 transition-all flex flex-col justify-between">
+            <div>
+              <div class="w-11 h-11 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/>
+                  <path d="M9 21h6"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-[#0EA5E9] uppercase tracking-wider">01 · SF NARRATIVE</span>
+              <h3 class="font-serif text-lg font-bold text-[#18181B] mt-1 mb-2.5">휴머노이드와 기억의 윤리</h3>
+              <p class="text-sm text-[#52525B] leading-relaxed">
+                감정을 학습한 안드로이드와 인간의 경계를 묻는 장편소설 『유리 심장의 연대기』를 통해, 기술 진보 이후에도 남는 사랑과 애도의 본질을 그립니다.
+              </p>
+            </div>
+            <button type="button" onclick="openWorkModalById(1)" class="mt-5 text-xs font-bold text-[#2563EB] hover:underline text-left">
+              『유리 심장의 연대기』 첫 페이지 미리보기 →
+            </button>
+          </div>
+
+          <!-- 프리뷰 카드 2 -->
+          <div class="bg-white rounded-2xl p-6 border border-[#E4E4E7] hover:border-blue-200 hover:shadow-lg hover:shadow-zinc-200/50 transition-all flex flex-col justify-between">
+            <div>
+              <div class="w-11 h-11 rounded-2xl bg-sky-50 text-[#0EA5E9] flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-[#0EA5E9] uppercase tracking-wider">02 · TECH ESSAY</span>
+              <h3 class="font-serif text-lg font-bold text-[#18181B] mt-1 mb-2.5">알고리즘 너머의 사유</h3>
+              <p class="text-sm text-[#52525B] leading-relaxed">
+                산문집 『알고리즘 이후의 산책』에서는 효율과 최적화로 요약되는 디지털 시대에, 우연과 느림이 주는 문학적 구원을 에세이로 풀어냅니다.
+              </p>
+            </div>
+            <button type="button" onclick="openWorkModalById(2)" class="mt-5 text-xs font-bold text-[#2563EB] hover:underline text-left">
+              『알고리즘 이후의 산책』 첫 페이지 미리보기 →
+            </button>
+          </div>
+
+          <!-- 프리뷰 카드 3 -->
+          <div class="bg-white rounded-2xl p-6 border border-[#E4E4E7] hover:border-blue-200 hover:shadow-lg hover:shadow-zinc-200/50 transition-all flex flex-col justify-between">
+            <div>
+              <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-[#0EA5E9] uppercase tracking-wider">03 · DIALOGUE & CRITIQUE</span>
+              <h3 class="font-serif text-lg font-bold text-[#18181B] mt-1 mb-2.5">기계와 시인의 대화</h3>
+              <p class="text-sm text-[#52525B] leading-relaxed">
+                로봇 공학자, 인지과학자, 그리고 문학가들이 나눈 심층 대담과 문화 비평을 통해 기술과 인문학이 공존하는 새로운 언어를 모색합니다.
+              </p>
+            </div>
+            <button type="button" onclick="openWorkModalById(4)" class="mt-5 text-xs font-bold text-[#2563EB] hover:underline text-left">
+              『기계와 시인의 대화』 첫 페이지 미리보기 →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 2: 자기소개 (ABOUT THE AUTHOR)                                   -->
+    <!-- ===================================================================== -->
+    <section id="page-about" class="page-view">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <!-- 페이지 헤더 -->
+        <div class="mb-10 pb-6 border-b border-[#E4E4E7]">
+          <span class="text-xs font-bold text-[#2563EB] tracking-wider uppercase">ABOUT THE AUTHOR</span>
+          <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#18181B] mt-1">작가 소개</h1>
+          <p class="text-sm sm:text-base text-[#52525B] mt-2">기술의 최전선에서 인간의 내면을 응시하는 소설가 서지훈의 기록입니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- 좌측 컬럼 (4칸): 작가 프로필 카드 & 집필 테마 키워드 카드 -->
+          <div class="lg:col-span-4 space-y-6">
+            <!-- 작가 프로필 카드 -->
+            <div class="bg-white rounded-3xl p-6 border border-[#E4E4E7] shadow-sm">
+              <div class="flex flex-col items-center text-center">
+                <!-- 프로필 아바타 -->
+                <div class="relative w-28 h-28 rounded-full overflow-hidden border-4 border-blue-50 shadow-md mb-4 bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" 
+                    alt="서지훈 작가 프로필 사진"
+                    class="w-full h-full object-cover relative z-10"
+                    onerror="this.style.display='none';"
+                  />
+                  <!-- SVG 아바타 폴백 -->
+                  <svg class="w-14 h-14 text-[#2563EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6"/>
+                  </svg>
+                </div>
+
+                <span class="px-3 py-0.5 rounded-full bg-blue-50 text-[#2563EB] text-xs font-bold">SF 소설가 · 테크 에세이스트</span>
+                <h2 class="font-serif text-2xl font-bold text-[#18181B] mt-2">서 지 훈</h2>
+                <p class="text-xs text-[#52525B] font-medium mt-0.5">Seo Ji-hoon (필명: 지훈 / J.H. Seo)</p>
+
+                <p class="text-sm text-[#52525B] leading-relaxed mt-4 pt-4 border-t border-[#E4E4E7]">
+                  대학에서 전자공학을 전공하고 문예창작대학원에서 소설을 공부했습니다. 2020년 문학계간지 신인상으로 등단한 이후 SF 소설, 테크 에세이, 문화 비평을 넘나들며 작품 활동을 이어가고 있습니다.
+                </p>
+              </div>
+
+              <!-- 집필 분야 & 연락처 / SNS -->
+              <div class="mt-6 pt-5 border-t border-[#E4E4E7] space-y-3 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-[#52525B] font-medium">집필 분야</span>
+                  <span class="font-bold text-[#18181B]">SF 소설 · 테크 에세이 · 비평</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-[#52525B] font-medium">강연/출간 문의</span>
+                  <span class="font-semibold text-[#2563EB]">contact@seojihoon.kr</span>
+                </div>
+                <div class="pt-2 flex items-center justify-center gap-2">
+                  <button type="button" onclick="copyAuthorEmail()" class="flex-1 py-2 px-3 rounded-xl bg-[#FAFAFC] hover:bg-blue-50 text-[#18181B] hover:text-[#2563EB] border border-[#E4E4E7] font-semibold transition-colors flex items-center justify-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span id="copy-email-label">이메일 복사</span>
+                  </button>
+                  <button type="button" onclick="navigateTo('guestbook')" class="flex-1 py-2 px-3 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-semibold transition-colors">
+                    독자 방명록 남기기
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 주요 집필 테마 태그 & 키워드 카드 -->
+            <div class="bg-white rounded-3xl p-6 border border-[#E4E4E7] shadow-sm">
+              <h3 class="text-sm font-bold text-[#18181B] mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#0EA5E9]"></span>
+                <span>주요 집필 테마 & 키워드</span>
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-blue-50 text-[#2563EB] text-xs font-bold">#휴머노이드_윤리</span>
+                <span class="px-3 py-1.5 rounded-xl bg-[#FAFAFC] text-[#18181B] border border-[#E4E4E7] text-xs font-semibold">#인공지능과_기억</span>
+                <span class="px-3 py-1.5 rounded-xl bg-[#FAFAFC] text-[#18181B] border border-[#E4E4E7] text-xs font-semibold">#포스트휴먼_문학</span>
+                <span class="px-3 py-1.5 rounded-xl bg-sky-50 text-[#0EA5E9] text-xs font-bold">#인간다움의_조건</span>
+                <span class="px-3 py-1.5 rounded-xl bg-[#FAFAFC] text-[#18181B] border border-[#E4E4E7] text-xs font-semibold">#우주_고고학</span>
+                <span class="px-3 py-1.5 rounded-xl bg-[#FAFAFC] text-[#18181B] border border-[#E4E4E7] text-xs font-semibold">#느린_산책의_미학</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측 컬럼 (8칸): 작가의 말 (Artist Statement) & 주요 이력 및 수상 연표 -->
+          <div class="lg:col-span-8 space-y-8">
+            <!-- 작가의 말 (Artist Statement) -->
+            <div class="bg-white rounded-3xl p-7 sm:p-9 border border-[#E4E4E7] shadow-sm">
+              <div class="flex items-center gap-2 text-xs font-bold text-[#2563EB] mb-3">
+                <span>ARTIST STATEMENT</span>
+                <span class="text-zinc-300">|</span>
+                <span class="text-[#52525B]">작가의 말</span>
+              </div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-[#18181B] leading-snug mb-5">
+                “첨단 기술과 로봇의 시대에, 인간다움이란 무엇인가”
+              </h3>
+              <div class="space-y-4 text-sm sm:text-[15px] text-[#52525B] leading-[1.85]">
+                <p>
+                  우리는 지금 인류 역사상 가장 정교한 거울을 마주하고 있습니다. 스스로 학습하는 알고리즘과 인간의 표정을 닮아가는 휴머노이드 로봇은 단순한 도구를 넘어, 우리에게 끊임없이 되묻습니다. <em class="text-[#18181B] font-medium not-italic">“당신을 인간이게 만드는 고유한 흔적은 무엇입니까?”</em>
+                </p>
+                <p>
+                  과거 연구실에서 회로를 설계하던 시절, 저는 완벽한 오차 제로(Zero)의 세계를 꿈꾸었습니다. 하지만 문학의 세계로 건너온 뒤 깨달았습니다. 인간을 가장 빛나게 만드는 것은 매끄러운 완벽함이 아니라, 때때로 흔들리고 망설이며 타인의 아픔 앞에서 발걸음을 멈추는 ‘아름다운 불완전함’이라는 사실을 말입니다.
+                </p>
+                <p>
+                  제 소설과 에세이는 차가운 미래의 풍경 위에 따뜻한 문장의 온기를 덧입히는 작업입니다. 기술이 빠르게 앞질러 갈수록, 문학은 한 걸음 뒤에 남아 그 길 위의 사람들을 다정하게 호명해야 한다고 믿습니다.
+                </p>
+              </div>
+              <div class="mt-6 pt-5 border-t border-[#E4E4E7] flex items-center justify-between">
+                <span class="font-serif italic text-sm text-[#18181B]">서지훈 드림</span>
+                <span class="text-xs text-[#52525B]">서울의 작은 서재에서</span>
+              </div>
+            </div>
+
+            <!-- 주요 이력 및 수상 연표 (Timeline) -->
+            <div class="bg-white rounded-3xl p-7 sm:p-9 border border-[#E4E4E7] shadow-sm">
+              <h3 class="font-serif text-xl font-bold text-[#18181B] mb-6">주요 이력 및 수상 연표</h3>
+
+              <div class="relative border-l-2 border-blue-100 ml-3 space-y-7">
+                <!-- 연표 1 -->
+                <div class="relative pl-7">
+                  <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#2563EB] ring-4 ring-blue-50"></span>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-extrabold text-[#2563EB] bg-blue-50 px-2.5 py-0.5 rounded-md">2026</span>
+                    <h4 class="text-base font-bold text-[#18181B]">장편소설 『유리 심장의 연대기』 출간 및 올해의 SF 선정</h4>
+                  </div>
+                  <p class="text-sm text-[#52525B] mt-1.5 leading-relaxed">
+                    감정 모듈을 탑재한 돌봄 로봇과 노년 건축가의 우정을 그린 장편소설 출간. 독자 및 평단 선정 올해의 화제작.
+                  </p>
+                </div>
+
+                <!-- 연표 2 -->
+                <div class="relative pl-7">
+                  <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#0EA5E9] ring-4 ring-sky-50"></span>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-extrabold text-[#0EA5E9] bg-sky-50 px-2.5 py-0.5 rounded-md">2024</span>
+                    <h4 class="text-base font-bold text-[#18181B]">인문 테크 에세이 『알고리즘 이후의 산책』 출간</h4>
+                  </div>
+                  <p class="text-sm text-[#52525B] mt-1.5 leading-relaxed">
+                    주요 일간지 「기술과 인간의 시간」 주말 칼럼 1년 연재 및 단행본 출간. 국립과학관 인문학 연속 강연 진행.
+                  </p>
+                </div>
+
+                <!-- 연표 3 -->
+                <div class="relative pl-7">
+                  <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-zinc-400 ring-4 ring-zinc-100"></span>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-extrabold text-[#52525B] bg-zinc-100 px-2.5 py-0.5 rounded-md">2022</span>
+                    <h4 class="text-base font-bold text-[#18181B]">제9회 한국 미래문학상 대상 수상</h4>
+                  </div>
+                  <p class="text-sm text-[#52525B] mt-1.5 leading-relaxed">
+                    중단편 소설집 『고요한 궤도』로 심사위원 전원 일치 대상 수상. “과학적 엄밀성과 서정적 문체의 완벽한 조화”라는 평을 받음.
+                  </p>
+                </div>
+
+                <!-- 연표 4 -->
+                <div class="relative pl-7">
+                  <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-zinc-300 ring-4 ring-zinc-100"></span>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-extrabold text-[#52525B] bg-zinc-100 px-2.5 py-0.5 rounded-md">2020</span>
+                    <h4 class="text-base font-bold text-[#18181B]">단편 「빛을 줍는 안드로이드」 신인문학상 등단</h4>
+                  </div>
+                  <p class="text-sm text-[#52525B] mt-1.5 leading-relaxed">
+                    계간 《현대서사》 신인상 당선으로 작품 활동 시작.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 3: 작품 소개 (WORKS & BIBLIOGRAPHY)                              -->
+    <!-- ===================================================================== -->
+    <section id="page-projects" class="page-view">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <!-- 페이지 헤더 & 카테고리 필터 탭 -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-[#E4E4E7]">
+          <div>
+            <span class="text-xs font-bold text-[#2563EB] tracking-wider uppercase">WORKS & BIBLIOGRAPHY</span>
+            <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#18181B] mt-1">작품 소개</h1>
+            <p class="text-sm sm:text-base text-[#52525B] mt-2">카드를 클릭하면 작품의 줄거리와 서평, 그리고 본문 첫 페이지 발췌문을 읽어보실 수 있습니다.</p>
+          </div>
+
+          <!-- 카테고리 필터 버튼 -->
+          <div class="flex flex-wrap items-center gap-2 bg-white p-1.5 rounded-2xl border border-[#E4E4E7] shadow-sm w-fit">
+            <button type="button" data-filter="all" class="work-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#2563EB] text-white transition-all">
+              전체 (6)
+            </button>
+            <button type="button" data-filter="장편소설" class="work-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-[#52525B] hover:bg-zinc-100 transition-all">
+              장편소설
+            </button>
+            <button type="button" data-filter="단편소설" class="work-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-[#52525B] hover:bg-zinc-100 transition-all">
+              단편소설
+            </button>
+            <button type="button" data-filter="에세이/비평" class="work-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-[#52525B] hover:bg-zinc-100 transition-all">
+              에세이/비평
+            </button>
+          </div>
+        </div>
+
+        <!-- 작품 카드 그리드 (JS 렌더링) -->
+        <div id="works-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+          <!-- JavaScript로 6편의 대표작 카드 동적 생성 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 4: 방명록 (GUESTBOOK)                                            -->
+    <!-- ===================================================================== -->
+    <section id="page-guestbook" class="page-view">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <!-- 페이지 헤더 -->
+        <div class="mb-10 pb-6 border-b border-[#E4E4E7]">
+          <span class="text-xs font-bold text-[#2563EB] tracking-wider uppercase">READERS' GUESTBOOK</span>
+          <h1 class="font-serif text-3xl sm:text-4xl font-bold text-[#18181B] mt-1">독자 방명록</h1>
+          <p class="text-sm sm:text-base text-[#52525B] mt-2">책을 읽고 느낀 단상이나 작가에게 전하고 싶은 응원의 한 줄을 남겨주세요.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- 좌측 (5칸): 방명록 작성 폼 -->
+          <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-7 border border-[#E4E4E7] shadow-sm lg:sticky lg:top-24">
+            <h2 class="font-serif text-xl font-bold text-[#18181B] mb-1">감상평 & 응원 남기기</h2>
+            <p class="text-xs text-[#52525B] mb-5">작성하신 글은 브라우저에 저장되며 언제든 다시 확인하실 수 있습니다.</p>
+
+            <form id="guestbook-form" class="space-y-4">
+              <!-- 독자 이름/닉네임 -->
+              <div>
+                <label for="gb-author" class="block text-xs font-bold text-[#18181B] mb-1.5">독자 이름 / 닉네임 <span class="text-[#2563EB]">*</span></label>
+                <input 
+                  type="text" 
+                  id="gb-author" 
+                  required 
+                  maxlength="20"
+                  placeholder="예: 밤하늘산책자" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-[#FAFAFC] border border-[#E4E4E7] text-sm text-[#18181B] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-colors"
+                />
+              </div>
+
+              <!-- 읽은 작품 선택 드롭다운 -->
+              <div>
+                <label for="gb-book" class="block text-xs font-bold text-[#18181B] mb-1.5">가장 인상 깊게 읽은 작품</label>
+                <select 
+                  id="gb-book" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-[#FAFAFC] border border-[#E4E4E7] text-sm text-[#18181B] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-colors"
+                >
+                  <option value="유리 심장의 연대기">『유리 심장의 연대기』 (장편소설)</option>
+                  <option value="알고리즘 이후의 산책">『알고리즘 이후의 산책』 (에세이)</option>
+                  <option value="고요한 궤도">『고요한 궤도』 (단편집)</option>
+                  <option value="기계와 시인의 대화">『기계와 시인의 대화』 (비평/대담)</option>
+                  <option value="백색 도시의 정원사">『백색 도시의 정원사』 (장편소설)</option>
+                  <option value="빛을 줍는 안드로이드">「빛을 줍는 안드로이드」 (단편소설)</option>
+                  <option value="작가 응원 일반">작가님께 전하는 첫 인사</option>
+                </select>
+              </div>
+
+              <!-- 독서 감성 태그 선택 -->
+              <div>
+                <label class="block text-xs font-bold text-[#18181B] mb-1.5">오늘의 독서 감성 태그</label>
+                <div class="flex flex-wrap gap-1.5" id="mood-tag-group">
+                  <button type="button" data-mood="따뜻한 울림" class="mood-btn px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#2563EB] border border-blue-200 transition-all">✨ 따뜻한 울림</button>
+                  <button type="button" data-mood="깊은 사유" class="mood-btn px-3 py-1 rounded-full text-xs font-semibold bg-[#FAFAFC] text-[#52525B] border border-[#E4E4E7] hover:bg-zinc-100 transition-all">🌌 깊은 사유</button>
+                  <button type="button" data-mood="완독 인증" class="mood-btn px-3 py-1 rounded-full text-xs font-semibold bg-[#FAFAFC] text-[#52525B] border border-[#E4E4E7] hover:bg-zinc-100 transition-all">📖 완독 인증</button>
+                  <button type="button" data-mood="신작 기대" class="mood-btn px-3 py-1 rounded-full text-xs font-semibold bg-[#FAFAFC] text-[#52525B] border border-[#E4E4E7] hover:bg-zinc-100 transition-all">🚀 신작 기대</button>
+                </div>
+              </div>
+
+              <!-- 메시지 입력 -->
+              <div>
+                <label for="gb-message" class="block text-xs font-bold text-[#18181B] mb-1.5">메시지 <span class="text-[#2563EB]">*</span></label>
+                <textarea 
+                  id="gb-message" 
+                  rows="4" 
+                  required 
+                  maxlength="300"
+                  placeholder="작품 속 인상 깊었던 문장이나 작가님께 전하고 싶은 이야기를 자유롭게 적어주세요." 
+                  class="w-full px-4 py-3 rounded-xl bg-[#FAFAFC] border border-[#E4E4E7] text-sm text-[#18181B] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-colors resize-none"
+                ></textarea>
+              </div>
+
+              <!-- 비밀글 체크박스 & 등록 버튼 -->
+              <div class="flex items-center justify-between pt-1">
+                <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                  <input type="checkbox" id="gb-secret" class="w-4 h-4 rounded border-zinc-300 text-[#2563EB] focus:ring-[#2563EB]" />
+                  <span class="text-xs font-medium text-[#52525B]">작가에게만 보이는 비밀글로 남기기</span>
+                </label>
+              </div>
+
+              <button type="submit" class="w-full py-3.5 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-600/20 transition-all">
+                방명록 등록하기
+              </button>
+            </form>
+          </div>
+
+          <!-- 우측 (7칸): 방명록 목록 -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="flex items-center justify-between bg-white px-5 py-3.5 rounded-2xl border border-[#E4E4E7]">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#2563EB]"></span>
+                <span class="text-sm font-bold text-[#18181B]">전체 독자 메시지</span>
+                <span id="gb-total-count" class="px-2 py-0.5 rounded-full bg-blue-50 text-[#2563EB] text-xs font-extrabold">4</span>
+              </div>
+              <span class="text-xs text-[#52525B]">최신순 정렬</span>
+            </div>
+
+            <!-- 방명록 카드 리스트 컨테이너 -->
+            <div id="guestbook-list" class="space-y-4">
+              <!-- JS로 초기 샘플 4개 + 사용자 작성글 렌더링 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- WORK DETAIL & FIRST-PAGE EXCERPT MODAL                                  -->
+  <!-- ======================================================================= -->
+  <div id="work-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-zinc-900/45 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[#E4E4E7] shadow-2xl p-6 sm:p-8 relative animate-[fadeSlideIn_0.25s_ease-out]">
+      <!-- 닫기 버튼 -->
+      <button type="button" onclick="closeWorkModal()" aria-label="모달 닫기" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#FAFAFC] hover:bg-zinc-100 border border-[#E4E4E7] flex items-center justify-center text-[#52525B] transition-colors">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- 모달 헤더 -->
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <span id="modal-genre" class="px-2.5 py-0.5 rounded-md bg-blue-50 text-[#2563EB] text-xs font-bold">장편소설</span>
+        <span id="modal-year" class="text-xs font-semibold text-[#52525B]">2026 출간</span>
+        <span id="modal-publisher" class="text-xs text-zinc-400">· 문학과지성사</span>
+      </div>
+
+      <h2 id="modal-title" class="font-serif text-2xl sm:text-3xl font-bold text-[#18181B]">작품 제목</h2>
+      <p id="modal-subtitle" class="text-sm text-[#52525B] mt-1">한 줄 부제</p>
+
+      <!-- 줄거리 및 서평 -->
+      <div class="mt-6 space-y-4">
+        <div>
+          <h3 class="text-xs font-bold text-[#18181B] uppercase tracking-wider mb-1.5">작품 소개 및 줄거리</h3>
+          <p id="modal-synopsis" class="text-sm text-[#52525B] leading-relaxed"></p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-blue-50/60 border border-blue-100">
+          <h3 class="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-1">추천사 및 서평</h3>
+          <p id="modal-review" class="text-xs sm:text-sm text-[#18181B] italic leading-relaxed"></p>
+        </div>
+
+        <!-- 본문 첫 페이지 미리보기 발췌문 -->
+        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAFAFC] border border-[#E4E4E7]">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-[#E4E4E7]">
+            <span class="text-xs font-bold text-[#18181B] flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2563EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              <span>본문 첫 페이지 발췌문 (Excerpt)</span>
+            </span>
+            <span class="text-[11px] text-[#52525B] font-serif">p. 007</span>
+          </div>
+          <p id="modal-excerpt" class="font-serif text-sm sm:text-[15px] text-[#18181B] leading-[1.95] whitespace-pre-line"></p>
+        </div>
+      </div>
+
+      <!-- 모달 하단 액션 -->
+      <div class="mt-6 pt-4 border-t border-[#E4E4E7] flex items-center justify-between gap-3">
+        <button type="button" onclick="goToGuestbookWithBook()" class="px-5 py-2.5 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white text-xs sm:text-sm font-bold transition-colors">
+          이 작품 감상평 남기기
+        </button>
+        <button type="button" onclick="closeWorkModal()" class="px-5 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-[#18181B] text-xs sm:text-sm font-semibold transition-colors">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- TOAST NOTIFICATION (ALERT 대체용 깔끔한 메시지 박스)                     -->
+  <!-- ======================================================================= -->
+  <div id="toast-box" class="fixed bottom-6 right-6 z-50 hidden items-center gap-2.5 bg-[#18181B] text-white px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-medium">
+    <span class="w-2 h-2 rounded-full bg-[#0EA5E9]"></span>
+    <span id="toast-text">알림 메시지</span>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MINIMAL EDITORIAL FOOTER                                                -->
+  <!-- ======================================================================= -->
+  <footer class="bg-white border-t border-[#E4E4E7] mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#52525B]">
+      <div class="flex items-center gap-2">
+        <span class="font-serif font-bold text-sm text-[#18181B]">서지훈 ARCHIVE</span>
+        <span>·</span>
+        <span>© 2026 Seo Ji-hoon. All rights reserved.</span>
+      </div>
+      <div class="flex items-center gap-5 font-medium">
+        <button type="button" onclick="navigateTo('home')" class="hover:text-[#2563EB] transition-colors">홈</button>
+        <button type="button" onclick="navigateTo('about')" class="hover:text-[#2563EB] transition-colors">자기소개</button>
+        <button type="button" onclick="navigateTo('projects')" class="hover:text-[#2563EB] transition-colors">작품 소개</button>
+        <button type="button" onclick="navigateTo('guestbook')" class="hover:text-[#2563EB] transition-colors">방명록</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- INTERACTIVE JAVASCRIPT LOGIC                                            -->
+  <!-- ======================================================================= -->
+  <script>
+    // -------------------------------------------------------------------------
+    // 1. 대표 작품 6편 데이터베이스 (서지 정보, 표지 그래픽 테마, 줄거리, 서평, 발췌문)
+    // -------------------------------------------------------------------------
+    const WORKS_DATA = [
+      {
+        id: 1,
+        title: "유리 심장의 연대기",
+        subtitle: "감정을 연산하는 안드로이드와 노년 건축가의 마지막 계절",
+        genre: "장편소설",
+        year: "2026",
+        publisher: "푸른서재",
+        coverGradient: "from-blue-600 via-sky-500 to-cyan-400",
+        coverBadge: "BESTSELLER · 3쇄",
+        summary: "2048년 서울, 기억 소거를 앞둔 은퇴 건축가와 그의 마지막 1년을 기록하기 위해 파견된 휴머노이드 'E-07'의 조용한 연대를 그린 장편소설.",
+        synopsis: "치매로 매일 조금씩 자신의 건축 도면과 이름을 잊어가는 노년 건축가 윤재하. 그의 곁에는 인간의 미세한 호흡과 망설임까지 학습하는 최신형 돌봄 로봇 E-07이 머문다. 삭제되어야 할 기억과 보존되어야 할 진심 사이에서, 두 존재는 세상에 단 하나뿐인 유리 집을 설계하기 시작한다.",
+        review: "“차가운 실리콘과 유리 위에 이토록 투명한 눈물을 맺히게 하는 작가의 문장력에 경탄한다.” — 문학평론가 한서연",
+        excerpt: "E-07이 처음 내 서재의 문턱을 넘었을 때, 나는 그 아이의 가슴 한가운데서 희미하게 명멸하는 푸른빛을 보았다. 엔지니어들은 그것을 단순한 배터리 잔량 표시등이라고 불렀지만, 그날 밤 창밖으로 첫눈이 내리던 순간, 나는 그 빛이 마치 겨울밤을 건너는 작은 심장박동처럼 흔들리는 것을 분명히 목격했다."
+      },
+      {
+        id: 2,
+        title: "알고리즘 이후의 산책",
+        subtitle: "초연결 시대에 잃어버린 우연과 느림을 되찾는 인문 에세이",
+        genre: "에세이/비평",
+        year: "2024",
+        publisher: "사유의숲",
+        coverGradient: "from-sky-500 via-blue-500 to-indigo-500",
+        coverBadge: "올해의 인문서",
+        summary: "추천 알고리즘이 우리의 취향과 동선까지 설계하는 시대, 의도적으로 길을 잃고 사유하는 '산책자'의 태도를 제안하는 32편의 산문.",
+        synopsis: "우리는 더 빠른 경로와 더 정확한 예측 속에서 살고 있지만, 정작 마음이 머무는 순간은 언제나 예상치 못한 골목의 모퉁이에서 찾아온다. 전자공학을 전공한 소설가가 기술의 언어와 문학의 언어를 나란히 놓고 써 내려간 다정한 인문 성찰.",
+        review: "“스마트폰을 잠시 내려놓고 낯선 동네의 오후를 걷고 싶게 만드는 맑고 단단한 에세이.” — 과학저술가 최민우",
+        excerpt: "지도 애플리케이션은 언제나 가장 빠른 길을 알려준다. 횡단보도의 신호 주기와 보행자의 평균 속도까지 계산해 1분의 낭비도 허락하지 않는다. 하지만 문학은 언제나 그 '낭비된 1분'의 틈새에서 태어난다. 쇼윈도에 비친 낡은 구두를 바라보며 잠시 멈춰 서는 시간, 알고리즘은 결코 그 멈춤의 가치를 계산하지 못한다."
+      },
+      {
+        id: 3,
+        title: "고요한 궤도",
+        subtitle: "제9회 한국 미래문학상 대상 수상작품집",
+        genre: "단편소설",
+        year: "2022",
+        publisher: "현대서사",
+        coverGradient: "from-indigo-600 via-blue-600 to-sky-500",
+        coverBadge: "미래문학상 대상",
+        summary: "지구 정지궤도 위의 폐기 위성 수거선에서 홀로 일하는 엔지니어와 오래된 통신 기록을 다룬 표제작 외 7편의 SF 단편집.",
+        synopsis: "수명이 다한 인공위성들을 궤도 밖으로 인도하는 '궤도 청소부' 지안은, 30년 전 신호가 끊긴 소형 탐사선에서 누군가 남겨둔 음성 편지를 발견한다. 우주라는 광활한 침묵 속에서 서로의 좌표를 확인하는 일곱 개의 빛나는 이야기.",
+        review: "“우주의 진공 상태를 가장 따뜻한 호흡으로 채우는 서지훈 SF의 정수.” — 제9회 한국 미래문학상 심사평",
+        excerpt: "지상으로부터 3만 6천 킬로미터 위에서는 어떤 소리도 공기를 타고 전해지지 않는다. 스패너가 선체 외벽에 부딪힐 때도, 내가 헬멧 속에서 작게 한숨을 내쉴 때도, 오직 내 뼈와 헬멧의 유리창만이 그 진동을 기억할 뿐이다. 그래서 나는 매일 밤 지구로 보내지 않을 일지를 기록한다."
+      },
+      {
+        id: 4,
+        title: "기계와 시인의 대화",
+        subtitle: "로봇 공학자·인지과학자·시인과 나눈 미래의 언어",
+        genre: "에세이/비평",
+        year: "2025",
+        publisher: "아카이브북스",
+        coverGradient: "from-cyan-500 via-sky-500 to-blue-600",
+        coverBadge: "기획 대담집",
+        summary: "생성형 AI와 휴머노이드 시대를 맞이하여 각 분야의 석학 6인과 작가가 나눈 깊고 명쾌한 대담 및 문화 비평집.",
+        synopsis: "기계가 시를 쓰고 로봇이 노인을 돌보는 시대, 창작과 공감의 정의는 어떻게 달라지고 있을까? 실험실과 서재를 오가며 나눈 치열하고도 유쾌한 질문들을 한 권에 담았다.",
+        review: "“기술 낙관론과 비관론을 넘어, 우리가 함께 만들어갈 내일의 윤리를 명쾌하게 짚어낸다.” — 테크 칼럼니스트 이지은",
+        excerpt: "시인이 은유를 만들 때, 그것은 두 개의 서로 다른 세계를 충돌시켜 새로운 불꽃을 일으키는 행위입니다. 반면 기계가 문장을 이어 붙일 때, 그것은 가장 확률이 높은 안전한 다리를 놓는 일에 가깝습니다. 결국 우리가 미래의 기계에게 배워야 할 것은 정답이 아니라, 더 나은 질문을 던지는 법일지도 모릅니다."
+      },
+      {
+        id: 5,
+        title: "백색 도시의 정원사",
+        subtitle: "완벽하게 통제된 스마트 시티에 피어난 이름 없는 식물들",
+        genre: "장편소설",
+        year: "2023",
+        publisher: "푸른서재",
+        coverGradient: "from-teal-500 via-sky-500 to-blue-500",
+        coverBadge: "SF 스테디셀러",
+        summary: "기후 위기 이후 건설된 순백의 돔 도시에서, 데이터에 등록되지 않은 야생 식물을 몰래 가꾸는 식물 복원가의 이야기.",
+        synopsis: "온도와 습도, 일조량까지 중앙 AI가 완벽하게 조율하는 돔 도시 '화이트 시티'. 어느 날 도시 외벽의 미세한 균열 사이로 정체불명의 푸른 싹이 돋아나고, 정원사 서연은 그 식물이 품은 오래된 지구의 비밀을 마주한다.",
+        review: "“백색의 건축물 위로 번져가는 초록의 서사가 눈부신 시각적 쾌감을 선사한다.” — 소설가 박도현",
+        excerpt: "중앙 통제실의 화면에는 도시 안의 모든 가로수 1만 4,200그루의 잎사귀 개수까지 실시간으로 집계되었다. 하지만 내 작업실 화분 밑바닥, 젖은 흙 틈에서 고개를 내민 그 작은 이끼만큼은 어떤 센서에도 잡히지 않았다. 이름 없는 생명은 언제나 통계의 바깥에서 시작된다."
+      },
+      {
+        id: 6,
+        title: "빛을 줍는 안드로이드",
+        subtitle: "2020년 《현대서사》 신인문학상 등단작 수록 단편선",
+        genre: "단편소설",
+        year: "2021",
+        publisher: "현대서사",
+        coverGradient: "from-blue-500 via-indigo-500 to-sky-400",
+        coverBadge: "등단 기념 단편선",
+        summary: "폐기 직전의 구형 시각 보조 로봇이 주인의 마지막 사진 필름을 현상하기 위해 떠나는 짧은 여정을 담은 데뷔작.",
+        synopsis: "화소가 낡아 세상을 흑백과 희미한 푸른빛으로만 인식하게 된 구형 로봇 '루멘'. 그는 떠나간 주인이 남긴 마지막 필름 한 롤을 인화하기 위해 비 내리는 항구 도시의 낡은 사진관을 찾아 나선다.",
+        review: "“첫 문장부터 마지막 마침표까지, 맑은 수채화처럼 독자의 마음을 적시는 데뷔작.” — 《현대서사》 편집부",
+        excerpt: "내 왼쪽 카메라 렌즈에는 3년 전 태풍이 불던 밤에 생긴 작은 긁힘이 남아 있다. 그 틈으로 빛이 들어올 때마다 세상의 모든 가로등은 길게 늘어진 별처럼 번져 보였다. 주인은 그 고장 난 시야를 고치는 대신, 내 렌즈가 비추는 풍경을 스케치북에 따라 그리곤 했다."
+      }
+    ];
+
+    // -------------------------------------------------------------------------
+    // 2. 초기 독자 방명록 샘플 데이터 (4개) & localStorage 연동
+    // -------------------------------------------------------------------------
+    const STORAGE_KEY = 'seo_jihoon_guestbook_v1';
+
+    const DEFAULT_GUESTBOOK = [
+      {
+        id: 'sample-1',
+        author: '은하수독서가',
+        book: '유리 심장의 연대기',
+        mood: '따뜻한 울림',
+        message: '마지막 장을 덮고 나서도 E-07의 푸른 불빛이 오랫동안 마음에 남았습니다. 기술에 관한 소설이 이렇게 따뜻할 수 있다는 걸 처음 알았어요.',
+        isSecret: false,
+        likes: 18,
+        liked: false,
+        date: '2026. 11. 10',
+        isMine: false
+      },
+      {
+        id: 'sample-2',
+        author: '새벽의산책자',
+        book: '알고리즘 이후의 산책',
+        mood: '깊은 사유',
+        message: '출근길 스마트폰 대신 작가님의 에세이를 펼쳤습니다. "낭비된 1분의 틈새에서 문학이 태어난다"는 문장을 수첩에 적어두었어요.',
+        isSecret: false,
+        likes: 14,
+        liked: false,
+        date: '2026. 11. 04',
+        isMine: false
+      },
+      {
+        id: 'sample-3',
+        author: '궤도비행사',
+        book: '고요한 궤도',
+        mood: '완독 인증',
+        message: '미래문학상 수상 소식 때부터 팬이었습니다! 우주의 침묵을 묘사하는 작가님 특유의 서정적인 문체를 정말 좋아합니다. 다음 장편도 기다릴게요.',
+        isSecret: false,
+        likes: 22,
+        liked: false,
+        date: '2026. 10. 27',
+        isMine: false
+      },
+      {
+        id: 'sample-4',
+        author: '로봇공학과24',
+        book: '기계와 시인의 대화',
+        mood: '신작 기대',
+        message: '연구실에서 밤새 코딩하다가 지칠 때마다 꺼내 읽는 책입니다. 제가 만드는 기술이 결국 사람을 향해야 한다는 초심을 일깨워 주셔서 감사합니다.',
+        isSecret: false,
+        likes: 11,
+        liked: false,
+        date: '2026. 10. 19',
+        isMine: false
+      }
+    ];
+
+    let guestbookEntries = [];
+    let currentWorkFilter = 'all';
+    let selectedMood = '따뜻한 울림';
+    let activeModalWork = null;
+
+    // -------------------------------------------------------------------------
+    // 3. 멀티 페이지 라우팅 & URL 해시 동기화
+    // -------------------------------------------------------------------------
+    function navigateTo(pageId, updateHash = true) {
+      const validPages = ['home', 'about', 'projects', 'guestbook'];
+      if (!validPages.includes(pageId)) pageId = 'home';
+
+      // 모든 페이지 뷰 숨김 후 대상 뷰 활성화
+      document.querySelectorAll('.page-view').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      const targetSection = document.getElementById(`page-${pageId}`);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+
+      // 데스크톱 & 모바일 내비게이션 활성 스타일 동기화
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.nav === pageId) {
+          btn.classList.add('bg-[#2563EB]', 'text-white', 'shadow-sm');
+          btn.classList.remove('text-[#52525B]', 'hover:text-[#18181B]');
+        } else {
+          btn.classList.remove('bg-[#2563EB]', 'text-white', 'shadow-sm');
+          btn.classList.add('text-[#52525B]', 'hover:text-[#18181B]');
+        }
+      });
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        if (btn.dataset.nav === pageId) {
+          btn.classList.add('bg-blue-50', 'text-[#2563EB]');
+          btn.classList.remove('text-[#52525B]');
+        } else {
+          btn.classList.remove('bg-blue-50', 'text-[#2563EB]');
+          btn.classList.add('text-[#52525B]');
+        }
+      });
+
+      // 모바일 드롭다운 닫기 & 상단 스크롤
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu) mobileMenu.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // URL 해시 동기화
+      if (updateHash && window.location.hash !== `#${pageId}`) {
+        history.pushState({ page: pageId }, '', `#${pageId}`);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. 작품 소개 그리드 렌더링 & 카테고리 필터링 & 상세 모달
+    // -------------------------------------------------------------------------
+    function renderWorks(filter = 'all') {
+      currentWorkFilter = filter;
+      const grid = document.getElementById('works-grid');
+      if (!grid) return;
+
+      const filtered = filter === 'all'
+        ? WORKS_DATA
+        : WORKS_DATA.filter(item => item.genre === filter);
+
+      grid.innerHTML = filtered.map(work => `
+        <article onclick="openWorkModalById(${work.id})" class="book-cover-card cursor-pointer bg-white rounded-3xl border border-[#E4E4E7] hover:border-blue-300 hover:shadow-xl hover:shadow-zinc-200/60 overflow-hidden flex flex-col justify-between group">
+          <div>
+            <!-- 에디토리얼 미니멀 책 표지 그래픽 -->
+            <div class="relative h-52 bg-gradient-to-br ${work.coverGradient} p-6 flex flex-col justify-between text-white overflow-hidden">
+              <!-- 기하학적 원형 궤도 데코레이션 -->
+              <div class="pointer-events-none absolute -right-8 -bottom-8 w-36 h-36 rounded-full border border-white/25"></div>
+              <div class="pointer-events-none absolute -right-2 -bottom-2 w-24 h-24 rounded-full bg-white/10"></div>
+
+              <div class="flex items-center justify-between relative z-10">
+                <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm text-[11px] font-bold tracking-wide">
+                  ${work.coverBadge}
+                </span>
+                <span class="text-xs font-mono opacity-85">${work.year}</span>
+              </div>
+
+              <div class="relative z-10">
+                <p class="text-[11px] uppercase tracking-widest opacity-85 mb-1">SEO JI-HOON ARCHIVE</p>
+                <h3 class="font-serif text-xl font-bold leading-snug group-hover:translate-x-0.5 transition-transform">
+                  『${work.title}』
+                </h3>
+              </div>
+            </div>
+
+            <!-- 책 메타 정보 & 한 줄 소개 -->
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs mb-2.5">
+                <span class="px-2.5 py-0.5 rounded-md bg-blue-50 text-[#2563EB] font-bold">${work.genre}</span>
+                <span class="text-[#52525B]">${work.publisher}</span>
+              </div>
+              <p class="text-sm font-semibold text-[#18181B] mb-2 leading-snug">${work.subtitle}</p>
+              <p class="text-xs sm:text-sm text-[#52525B] leading-relaxed line-clamp-3">${work.summary}</p>
+            </div>
+          </div>
+
+          <div class="px-6 pb-5 pt-3 border-t border-[#E4E4E7]/70 flex items-center justify-between text-xs font-bold text-[#2563EB]">
+            <span>줄거리 · 첫 페이지 발췌문 읽기</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function openWorkModalById(workId) {
+      const work = WORKS_DATA.find(w => w.id === workId);
+      if (!work) return;
+      activeModalWork = work;
+
+      document.getElementById('modal-genre').textContent = work.genre;
+      document.getElementById('modal-year').textContent = `${work.year} 출간`;
+      document.getElementById('modal-publisher').textContent = `· ${work.publisher}`;
+      document.getElementById('modal-title').textContent = `『${work.title}』`;
+      document.getElementById('modal-subtitle').textContent = work.subtitle;
+      document.getElementById('modal-synopsis').textContent = work.synopsis;
+      document.getElementById('modal-review').textContent = work.review;
+      document.getElementById('modal-excerpt').textContent = work.excerpt;
+
+      const modal = document.getElementById('work-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWorkModal() {
+      const modal = document.getElementById('work-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function goToGuestbookWithBook() {
+      const bookTitle = activeModalWork ? activeModalWork.title : '';
+      closeWorkModal();
+      navigateTo('guestbook');
+      if (bookTitle) {
+        const select = document.getElementById('gb-book');
+        if (select) {
+          for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value === bookTitle) {
+              select.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. 방명록(Guestbook) 렌더링, localStorage 저장, 공감(하트), 본인 글 삭제
+    // -------------------------------------------------------------------------
+    function loadGuestbook() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          guestbookEntries = JSON.parse(saved);
+        } else {
+          guestbookEntries = [...DEFAULT_GUESTBOOK];
+          saveGuestbook();
+        }
+      } catch (e) {
+        guestbookEntries = [...DEFAULT_GUESTBOOK];
+      }
+    }
+
+    function saveGuestbook() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(guestbookEntries));
+      } catch (e) {
+        // 스토리지 제한 환경 무시
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderGuestbook() {
+      const listEl = document.getElementById('guestbook-list');
+      const countEl = document.getElementById('gb-total-count');
+      if (!listEl) return;
+
+      if (countEl) countEl.textContent = guestbookEntries.length;
+
+      listEl.innerHTML = guestbookEntries.map(item => `
+        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-[#E4E4E7] hover:border-blue-200 transition-colors shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-sky-100 text-[#2563EB] font-bold text-sm flex items-center justify-center border border-blue-100">
+                ${escapeHtml(item.author.charAt(0))}
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-sm font-bold text-[#18181B]">${escapeHtml(item.author)}</span>
+                  ${item.isMine ? '<span class="px-1.5 py-0.5 rounded bg-blue-50 text-[#2563EB] text-[10px] font-bold">MY</span>' : ''}
+                </div>
+                <span class="text-[11px] text-[#52525B]">${escapeHtml(item.date)}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="px-2.5 py-1 rounded-full bg-[#FAFAFC] border border-[#E4E4E7] text-[11px] font-semibold text-[#52525B]">
+                📖 ${escapeHtml(item.book)}
+              </span>
+              <span class="px-2.5 py-1 rounded-full bg-blue-50 text-[#2563EB] text-[11px] font-bold">
+                ${escapeHtml(item.mood)}
+              </span>
+            </div>
+          </div>
+
+          <!-- 메시지 본문 (비밀글 처리 지원) -->
+          <div class="text-sm text-[#18181B] leading-relaxed py-1">
+            ${item.isSecret 
+              ? '<p class="text-[#52525B] italic flex items-center gap-1.5 bg-[#FAFAFC] px-3.5 py-2.5 rounded-xl border border-[#E4E4E7]"><span>🔒</span><span>작가에게만 공개된 비밀 응원 메시지입니다.</span></p>'
+              : `<p class="whitespace-pre-line">${escapeHtml(item.message)}</p>`
+            }
+          </div>
+
+          <!-- 하단 공감(하트) & 본인 글 삭제 버튼 -->
+          <div class="mt-4 pt-3 border-t border-[#E4E4E7]/70 flex items-center justify-between">
+            <button type="button" onclick="toggleGuestbookLike('${item.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors ${
+              item.liked 
+                ? 'bg-rose-50 text-rose-600 border border-rose-200' 
+                : 'bg-[#FAFAFC] text-[#52525B] hover:bg-rose-50 hover:text-rose-600 border border-[#E4E4E7]'
+            }">
+              <span>${item.liked ? '♥' : '♡'}</span>
+              <span>공감 ${item.likes}</span>
+            </button>
+
+            ${item.isMine ? `
+              <button type="button" onclick="deleteGuestbookEntry('${item.id}')" class="text-xs font-semibold text-zinc-400 hover:text-rose-600 transition-colors px-2 py-1">
+                삭제하기
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleGuestbookLike(id) {
+      const target = guestbookEntries.find(entry => entry.id === id);
+      if (!target) return;
+      target.liked = !target.liked;
+      target.likes += target.liked ? 1 : -1;
+      saveGuestbook();
+      renderGuestbook();
+    }
+
+    function deleteGuestbookEntry(id) {
+      guestbookEntries = guestbookEntries.filter(entry => entry.id !== id);
+      saveGuestbook();
+      renderGuestbook();
+      showToast('작성하신 방명록 메시지가 삭제되었습니다.');
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. 유틸리티 (이메일 복사, 토스트 알림)
+    // -------------------------------------------------------------------------
+    function showToast(msg) {
+      const box = document.getElementById('toast-box');
+      const text = document.getElementById('toast-text');
+      if (!box || !text) return;
+      text.textContent = msg;
+      box.classList.remove('hidden');
+      box.classList.add('flex');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        box.classList.add('hidden');
+        box.classList.remove('flex');
+      }, 2800);
+    }
+
+    function copyAuthorEmail() {
+      const email = 'contact@seojihoon.kr';
+      const tempInput = document.createElement('input');
+      tempInput.value = email;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast('작가 이메일(contact@seojihoon.kr)이 클립보드에 복사되었습니다.');
+      } catch (e) {
+        showToast('이메일: contact@seojihoon.kr');
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. 초기 이벤트 바인딩 및 부트스트랩
+    // -------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      // 모바일 메뉴 토글
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      // 작품 카테고리 필터 탭 이벤트
+      document.querySelectorAll('.work-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.work-filter-btn').forEach(b => {
+            b.classList.remove('bg-[#2563EB]', 'text-white', 'font-bold');
+            b.classList.add('text-[#52525B]', 'font-semibold', 'hover:bg-zinc-100');
+          });
+          btn.classList.add('bg-[#2563EB]', 'text-white', 'font-bold');
+          btn.classList.remove('text-[#52525B]', 'font-semibold', 'hover:bg-zinc-100');
+          renderWorks(btn.dataset.filter);
+        });
+      });
+
+      // 방명록 감성 태그 선택
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mood-btn').forEach(b => {
+            b.classList.remove('bg-blue-50', 'text-[#2563EB]', 'border-blue-200', 'font-bold');
+            b.classList.add('bg-[#FAFAFC]', 'text-[#52525B]', 'border-[#E4E4E7]', 'font-semibold');
+          });
+          btn.classList.add('bg-blue-50', 'text-[#2563EB]', 'border-blue-200', 'font-bold');
+          btn.classList.remove('bg-[#FAFAFC]', 'text-[#52525B]', 'border-[#E4E4E7]', 'font-semibold');
+          selectedMood = btn.dataset.mood;
+        });
+      });
+
+      // 방명록 새 글 등록 폼 제출
+      const gbForm = document.getElementById('guestbook-form');
+      if (gbForm) {
+        gbForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const authorInput = document.getElementById('gb-author');
+          const bookSelect = document.getElementById('gb-book');
+          const messageInput = document.getElementById('gb-message');
+          const secretCheckbox = document.getElementById('gb-secret');
+
+          const author = authorInput.value.trim();
+          const message = messageInput.value.trim();
+          if (!author || !message) return;
+
+          const now = new Date();
+          const dateStr = `${now.getFullYear()}. ${String(now.getMonth() + 1).padStart(2, '0')}. ${String(now.getDate()).padStart(2, '0')}`;
+
+          const newEntry = {
+            id: 'user-' + Date.now(),
+            author,
+            book: bookSelect.value,
+            mood: selectedMood,
+            message,
+            isSecret: secretCheckbox.checked,
+            likes: 1,
+            liked: true,
+            date: dateStr,
+            isMine: true
+          };
+
+          guestbookEntries.unshift(newEntry);
+          saveGuestbook();
+          renderGuestbook();
+
+          authorInput.value = '';
+          messageInput.value = '';
+          secretCheckbox.checked = false;
+          showToast('소중한 독자 방명록이 등록되었습니다.');
+        });
+      }
+
+      // 모달 바깥 영역 클릭 & ESC 닫기
+      const workModal = document.getElementById('work-modal');
+      if (workModal) {
+        workModal.addEventListener('click', (e) => {
+          if (e.target === workModal) closeWorkModal();
+        });
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeWorkModal();
+      });
+
+      // 초기 데이터 로드 및 해시 라우팅 초기화
+      renderWorks('all');
+      loadGuestbook();
+      renderGuestbook();
+
+      const initialHash = window.location.hash.replace('#', '');
+      navigateTo(initialHash || 'home', false);
+
+      window.addEventListener('hashchange', () => {
+        const hashPage = window.location.hash.replace('#', '');
+        navigateTo(hashPage || 'home', false);
+      });
+    });
+  </script>
+</body>
+</html>
